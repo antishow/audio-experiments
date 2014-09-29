@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+		<script src="lib/js/src/music.js"></script>
+		<script src="lib/js/vendor/Audiolet.js"></script>
+		<script src="lib/js/src/app.js"></script>
+		<link rel="stylesheet" href="lib/css/style.css" />
+	</head>
+	<body>
+		<div id="background"></div>
+		<div id="root" ng-app="audio">
+			<div ng-controller="synth">
+				<div class="settings">
+					<select ng-model="note" ng-options="item.value as item.label for item in notes" ng-change="updateScale()"></select>
+					<select ng-model="accidental" ng-options="item.value as item.label for item in accidentals" ng-change="updateScale()"></select>
+					<select ng-model="mode" ng-options="item.value as item.label for item in modes" ng-change="updateScale()"></select>
+					<select ng-model="octave" ng-options="octave as octave for octave in octaves" ng-change="updateScale()"></select>
+					<select ng-model="waveform" ng-options="waveform as waveform for waveform in waveforms" ng-change="updateScale()"></select>
+				</div>
+				<div class="keys" ng-class="{'octatonic': mode == 'diminished', 'heptatonic': mode != 'diminished' }">
+					<div class="key" ng-repeat="note in scale" data-ordinal="{{ $index + 1 }}">
+						<span ng-bind="note | noteDisplay"></span></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
