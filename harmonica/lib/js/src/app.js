@@ -7,7 +7,9 @@ var audiolet = new Audiolet();
 
 	app.filter("noteDisplay", function(){
 		return function(input){
-			return input.replace(/^\d+_/, "").replace("-SHARP", "\u266f").replace("-FLAT", "\u266d");
+			return input.replace(/^\d+_/, "")
+				.replace(/-SHARP/g, "\u266f")
+				.replace(/-FLAT/g, "\u266d");
 		}
 	});
 

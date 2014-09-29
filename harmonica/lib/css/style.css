@@ -6,7 +6,7 @@ html {
 }
 
 BODY{
-	font-family: Helvetica, Verdana, sans-serif;
+	font-family: "Open Sans", sans-serif;
 }
 
 #background{
@@ -31,7 +31,7 @@ BODY{
 	left: 0;
 	width: 100%;
 	transform: translateY(-50%);
-	z-index: 2;
+	z-index: 3;
 }
 
 .keys{
@@ -48,7 +48,7 @@ BODY{
 	display: inline-block;
 	border-radius: 0.25em;
 	text-align: center;
-	font-size: 3em;
+	font-size: 2em;
 	border: solid white 2px;
 	height: 2.5em;
 	line-height: 2.5em;
@@ -61,7 +61,7 @@ BODY{
 .keys .key:after{
 	content: attr(data-ordinal);
 	display: block;
-	font-size: 0.25em;
+	font-size: 0.33333em;
 	text-align: center;
 	line-height: 1em;
 	margin-top: -1.5em;
@@ -81,4 +81,14 @@ BODY{
 .key.active{
 	background: rgba(0, 0, 40, 0.5);
 	border-width: 1px;
+}
+
+.be-sharps{
+	left: 0;
+	top: 0;
+	position: fixed;
+	width: 417px;
+	height: 532px;
+	background-image: url("../img/be-sharps.png");
+	z-index: 2;
 }

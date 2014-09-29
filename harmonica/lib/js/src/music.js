@@ -21,44 +21,80 @@ Music = (function(){
 	var notes = [261.63, 277.18, 293.66, 311.13, 329.63, 349.23, 369.99, 392, 415.3, 440, 466.16, 493.88];
 	var majorSteps = [2,2,1,2,2,2,1];
 	var diminishedSteps = [2,1,2,1,2,1,2,1];
+	var naturals = ["C", "D", "E", "F", "G", "A", "B"];
 	var modes = ["ionian", "dorian", "phrygian", "lydian", "mixolydian", "aeolian", "locrian"];
-	var chromatic = ["C", "C-SHARP", "D", "D-SHARP", "E", "F", "F-SHARP", "G", "G-SHARP", "A", "A-SHARP", "B"];
-	var chromaticFlat = ["C", "D-FLAT", "D", "E-FLAT", "E", "F", "G-FLAT", "G", "A-FLAT", "A", "B-FLAT", "B"];
+	var chromatic = [
+		"B-SHARP/C/D-FLAT-FLAT", 
+		"B-SHARP-SHARP/C-SHARP/D-FLAT", 
+		"C-SHARP-SHARP/D/E-FLAT-FLAT", 
+		"D-SHARP/E-FLAT/F-FLAT-FLAT", 
+		"D-SHARP-SHARP/E/F-FLAT", 
+		"E-SHARP/F/G-FLAT-FLAT", 
+		"E-SHARP-SHARP/F-SHARP/G-FLAT", 
+		"F-SHARP-SHARP/G/A-FLAT-FLAT", 
+		"G-SHARP/A-FLAT", 
+		"G-SHARP-SHARP/A/B-FLAT-FLAT", 
+		"A-SHARP/B-FLAT/C-FLAT-FLAT", 
+		"A-SHARP-SHARP/B/C-FLAT"
+	];
 
 	function getScale(key, mode, octave){
 		key = filterKey(key || "C");
 		mode = filterMode(mode || "ionian");
 		octave = octave || 4;
 
+		var ret = [];
 		var modeSteps = majorSteps.circleOffset(modes.indexOf(mode));
-		var chromaticScale = key.match(/-FLAT/) ? chromaticFlat : chromatic;
-
 		if(mode === "diminished"){
 			modeSteps = diminishedSteps;
 		}
 
-		var firstNote = chromaticScale.indexOf(key);
-		var ret = [];
+		//var firstNote; = chromaticScale.indexOf(key);
+		for(var firstNote = 0; firstNote < chromatic.length; firstNote++){
+			var chromaticNote = chromatic[firstNote];
+			var split = chromaticNote.split("/");
+			if(split.indexOf(key) >= 0){
+				break;
+			}
+			else{
+				continue;
+			}
+		}
 
+		var firstNatural = naturals.indexOf(key.split('-').shift());
 		var stepsFromFirstNote = 0;
+
 		for(var i=0; i<(modeSteps.length + 1); i++){
 			if(i){
 				stepsFromFirstNote += modeSteps[i - 1];
 			}
 
-			var noteIndex = (firstNote + stepsFromFirstNote) % chromaticScale.length;
-			var octaveOffset = Math.floor((firstNote + stepsFromFirstNote) / chromaticScale.length);
+			var natural = naturals[(firstNatural + i) % 7];
+			var noteIndex = (firstNote + stepsFromFirstNote) % chromatic.length;
+			var octaveOffset = Math.floor((firstNote + stepsFromFirstNote) / chromatic.length);
 
 			while(noteIndex < 0){
 				noteIndex += chromaticScale.length;
 			}
 
-			var note = (octave + octaveOffset) + "_" + chromaticScale[noteIndex];
+			var noteGroup = (chromatic[noteIndex]).split("/");
+			for(var groupIndex = 0; groupIndex<noteGroup.length; groupIndex++){
+				var groupItem = noteGroup[groupIndex];
+				if(groupItem.substring(0,1) === natural){
+					break;
+				}
+				else{
+					continue;
+				}
+			}
+			var note = (octave + octaveOffset) + "_" + noteGroup[groupIndex];
+
 			ret.push(note);
 		}
 
 		return ret;
 	}
+
 
 	function filterKey(key){
 		var ret = key;
@@ -94,8 +130,18 @@ Music = (function(){
 
 	function getNoteFrequency(note){
 		var octave = note.split("_").shift();
-		var chromaticScale = note.match(/-FLAT/) ? chromaticFlat : chromatic;
-		var chromaticIndex = chromaticScale.indexOf(note.split("_").pop());
+		var scaleNote = note.split("_").pop();
+
+		for(var chromaticIndex=0; chromaticIndex<chromatic.length; chromaticIndex++){
+			var chromaticNote = chromatic[chromaticIndex];
+			var split = chromaticNote.split("/");
+			if(split.indexOf(scaleNote) >= 0){
+				break;
+			}
+			else{
+				continue;
+			}
+		}
 		var middleFrequency = notes[chromaticIndex];
 		var multiplier = Math.pow(2, octave - 4);
 

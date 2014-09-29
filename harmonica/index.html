@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="audio">
 	<head>
 		<meta name="viewport" content="width=device-width">
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -7,12 +7,14 @@
 		<script src="lib/js/src/music.js"></script>
 		<script src="lib/js/vendor/Audiolet.js"></script>
 		<script src="lib/js/src/app.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="lib/css/style.css" />
 	</head>
-	<body>
+	<body ng-controller="synth">
 		<div id="background"></div>
-		<div id="root" ng-app="audio">
-			<div ng-controller="synth">
+		<div class="be-sharps" ng-show="(note == 'B') && (accidental == '-SHARP')"></div>
+		<div id="root">
+			<div>
 				<div class="settings">
 					<select ng-model="note" ng-options="item.value as item.label for item in notes" ng-change="updateScale()"></select>
 					<select ng-model="accidental" ng-options="item.value as item.label for item in accidentals" ng-change="updateScale()"></select>
