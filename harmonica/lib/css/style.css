@@ -44,18 +44,22 @@ BODY{
 }
 
 .keys .key{
+	-webkit-transition: all 0.3s ease;
+	transition: all 0.3s ease;
 	color: white;
 	display: inline-block;
 	border-radius: 0.25em;
 	text-align: center;
 	font-size: 2em;
 	border: solid white 2px;
+	background-color: rgba(0,0,0,0);
 	height: 2.5em;
 	line-height: 2.5em;
 	margin: 0.333em 0;
 	white-space: nowrap;
 	overflow: hidden;
 	float: left;
+	transform: scale(1);
 }
 
 .keys .key:after{
@@ -80,7 +84,7 @@ BODY{
 
 .key.active{
 	background: rgba(0, 0, 40, 0.5);
-	border-width: 1px;
+	transform: scale(1.05);
 }
 
 .be-sharps{
